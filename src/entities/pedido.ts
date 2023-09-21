@@ -1,21 +1,24 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, CreateDateColumn } from "typeorm"
 import { UUID } from "typeorm/driver/mongodb/bson.typings"
-import { Cliente } from "./cliente"
-import { PedidoItem } from "./pedidoItem"
+import { Customera } from "./cliente"
+import { Itemsa } from "./pedidoItem"
 
 @Entity()
-export class Pedido {
+export class Pedidoa {
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
     uuid: string
 
     @CreateDateColumn()
     data_cadastro: Date;
 
-    @ManyToOne(type => Cliente)
+    @ManyToOne(type => Customera)
     @JoinColumn({ name: 'cliente_id' })
-    cliente: Cliente
+    customer: Customera
 
-    @OneToMany(type => PedidoItem, type => type.pedido)
-    itens: PedidoItem[]
+    @OneToMany(type => Itemsa, type => type.pedido)
+    items: Itemsa[]
 }

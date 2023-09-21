@@ -1,26 +1,26 @@
 import { Repository } from "typeorm"
-import { Pedido } from "../../entities/pedido"
+import { Pedidoa } from "../../entities/pedido"
 import { AppDataSource } from "../../data-source"
 import clienteRepositorio from "../cliente/cliente.repositorio"
 import pedidoItemRepositorio from "../pedidoItem/pedidoItem.repositorio"
 
 class PedidoRepositorio {
-  private repo: Repository<Pedido>
+  private repo: Repository<Pedidoa>
   constructor() {
-    this.repo = AppDataSource.getRepository(Pedido)
+    this.repo = AppDataSource.getRepository(Pedidoa)
   }
 
   public async filtrar(uuid: string) {
     try {
 
       const query = this.repo.createQueryBuilder('p')
-        .innerJoin('p.itens', 'pi')
-        .innerJoin('p.cliente', 'c')
+        .innerJoin('p.items', 'pi')
+        .innerJoin('p.customer', 'c')
         .select('p.uuid')
         .addSelect('p.data_cadastro')
         .addSelect('c')
         .addSelect('pi')
-        .groupBy('p.uuid, c.id, pi.id')
+        .groupBy('p.uuid, c.id, pi.id, p.data_cadastro, p.id')
       if (uuid) query.where('uuid = :uuid', { uuid })
 
       return await query.getMany()
@@ -30,18 +30,18 @@ class PedidoRepositorio {
     }
   }
 
-  public async salvar(pedido: Pedido) {
+  public async salvar(pedido: Pedidoa) {
     try {
-      if (pedido.cliente) {
-        pedido.cliente = await clienteRepositorio.salvar(pedido.cliente)
+      if (pedido.customer) {
+        pedido.customer = await clienteRepositorio.salvar(pedido.customer)
       }
 
-      if (pedido.itens.length > 0) {
-        const itens = Object.assign([], pedido.itens)
-        pedido.itens = []
+      if (pedido.items.length > 0) {
+        const itens = Object.assign([], pedido.items)
+        pedido.items = []
         for (const item of itens) {
           const itemSalvo = await pedidoItemRepositorio.salvar(item)
-          pedido.itens.push(itemSalvo)
+          pedido.items.push(itemSalvo)
         }
       }
 

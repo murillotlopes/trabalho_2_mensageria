@@ -1,18 +1,20 @@
 import { Repository } from "typeorm";
-import { PedidoItem } from "../../entities/pedidoItem";
+import { Itemsa } from "../../entities/pedidoItem";
 import { AppDataSource } from "../../data-source";
 import produtoRepositorio from "../produto/produto.repositorio";
 
 class PedidoItemRepositorio {
-  repo: Repository<PedidoItem>
+  repo: Repository<Itemsa>
   constructor() {
-    this.repo = AppDataSource.getRepository(PedidoItem)
+    this.repo = AppDataSource.getRepository(Itemsa)
   }
 
-  public async salvar(pedidoItem: PedidoItem): Promise<PedidoItem> {
-    if (pedidoItem.produto) {
-      pedidoItem.produto = await produtoRepositorio.salvar(pedidoItem.produto)
+  public async salvar(pedidoItem: Itemsa): Promise<Itemsa> {
+    if (pedidoItem.sku) {
+      pedidoItem.sku = await produtoRepositorio.salvar(pedidoItem.sku)
     }
+
+    pedidoItem.value = pedidoItem.sku.value
 
     return this.repo.save(pedidoItem)
   }

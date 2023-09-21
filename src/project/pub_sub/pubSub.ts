@@ -1,10 +1,10 @@
-import { Pedido } from "../../entities/pedido"
+import { Pedidoa } from "../../entities/pedido"
 import pedidoRepositorio from "../pedido/pedido.repositorio"
 import { geradorDePedidos } from "./geradorFake";
 const { PubSub } = require('@google-cloud/pubsub')
 
 
-const credentials = process.env.CREDENTIALS
+const credentials = JSON.parse(process.env.CREDENTIALS)
 const projectId = process.env.PROJECTID;
 
 
@@ -13,28 +13,27 @@ const pubSubClient = new PubSub({ projectId, credentials });
 async function listenForMessages(subscriptionNameOrId: string, timeout: number) {
   const subscription = pubSubClient.subscription(subscriptionNameOrId);
 
+
   let messageCount = 0;
 
-  let pedido: Pedido = await geradorDePedidos()
+  // let pedido: Pedido = await geradorDePedidos()
 
-  const pedidoSalvo = await pedidoRepositorio.salvar(pedido)
+  // const pedidoSalvo = await pedidoRepositorio.salvar(pedido)
 
   const messageHandler = async message => {
     messageCount += 1;
 
-    // let pedido = JSON.parse(message.data);
-    // let pedido: Pedido = geradorDePedidos()
-    // console.log(pedido)
+    let pedido = JSON.parse(message.data);
+    console.log(pedido)
 
-    // const pedidoSalvo = await pedidoRepositorio.salvar(pedido)
-    // console.log(pedido)
+    const pedidoSalvo = await pedidoRepositorio.salvar(pedido)
 
     // "Ack" (acknowledge receipt of) the message
-    //message.ack();
+    message.ack();
   };
 
   // Listen for new messages until timeout is hit
-  // subscription.on('message', messageHandler);
+  subscription.on('message', messageHandler);
 
   // Wait a while for the subscription to run. (Part of the sample only.)
   // setTimeout(() => {

@@ -1,18 +1,21 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { PedidoItem } from "./pedidoItem"
+import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Itemsa } from "./pedidoItem"
 
 @Entity()
-export class Produto {
+export class Skua {
 
   @PrimaryGeneratedColumn()
-  id: number
+  codigo: number
 
   @Column()
+  id: string
+
+  @Column({ nullable: true })
   descricao: string
 
   @Column('decimal', { precision: 10, scale: 2 })
-  valor: number
+  value: number
 
-  @OneToMany(type => PedidoItem, type => type.produto)
-  pedido_itens: PedidoItem[]
+  @OneToMany(type => Itemsa, type => type.sku)
+  items: Itemsa[]
 }

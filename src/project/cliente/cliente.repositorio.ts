@@ -1,11 +1,11 @@
 import { Repository } from "typeorm"
 import { AppDataSource } from "../../data-source"
-import { Cliente } from "../../entities/cliente"
+import { Customera } from "../../entities/cliente"
 
 class ClienteRepositorio {
-  private repo: Repository<Cliente>
+  private repo: Repository<Customera>
   constructor() {
-    this.repo = AppDataSource.getRepository(Cliente)
+    this.repo = AppDataSource.getRepository(Customera)
   }
 
   public async filtrar(id: string) {
@@ -21,7 +21,7 @@ class ClienteRepositorio {
     }
   }
 
-  public async salvar(cliente: Cliente): Promise<Cliente> {
+  public async salvar(cliente: Customera): Promise<Customera> {
     try {
       return this.repo.save(cliente)
     } catch (error) {

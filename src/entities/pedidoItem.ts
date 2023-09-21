@@ -1,24 +1,24 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm"
-import { Pedido } from "./pedido"
-import { Produto } from "./produto"
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
+import { Pedidoa } from "./pedido"
+import { Skua } from "./produto"
 
 @Entity()
-export class PedidoItem {
+export class Itemsa {
 
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @Column()
-  quantidade: number
+  quantity: number
 
   @Column('decimal', { precision: 10, scale: 2 })
-  valor_un: number
+  value: number
 
-  @ManyToOne(type => Pedido)
+  @ManyToOne(type => Pedidoa)
   @JoinColumn({ name: 'pedido_id' })
-  pedido: Pedido
+  pedido: Pedidoa
 
-  @ManyToOne(type => Produto)
+  @ManyToOne(type => Skua)
   @JoinColumn({ name: 'produto_id' })
-  produto: Produto
+  sku: Skua
 }
