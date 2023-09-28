@@ -1,32 +1,33 @@
-import { Pedido } from "../../entities/pedido"
+import { Pedidoa } from "../../entities/pedido"
 import { faker } from '@faker-js/faker'
-import { PedidoItem } from "../../entities/pedidoItem"
-import { Produto } from "../../entities/produto"
-import { Cliente } from "../../entities/cliente"
+import { Itemsa } from "../../entities/pedidoItem"
+import { Skua } from "../../entities/produto"
+import { Customera } from "../../entities/cliente"
 
-export const geradorDePedidos = async (): Promise<Pedido> => {
-  const pedido = new Pedido()
+export const geradorDePedidos = async (): Promise<Pedidoa> => {
+  const pedido = new Pedidoa()
   const qtdItens = faker.number.int({ min: 1, max: 15 })
 
-  const cliente = new Cliente()
+  const cliente = new Customera()
 
-  cliente.nome = faker.person.fullName()
+  cliente.name = faker.person.fullName()
 
-  pedido.cliente = cliente
-  pedido.itens = await geradorDePedidoItens(qtdItens)
+  pedido.customer = cliente
+  pedido.uuid = faker.string.uuid()
+  pedido.items = await geradorDePedidoItens(qtdItens)
 
   return pedido
 }
 
-export const geradorDePedidoItens = async (qtdItens: number): Promise<PedidoItem[]> => {
-  let itens: PedidoItem[] = []
+export const geradorDePedidoItens = async (qtdItens: number): Promise<Itemsa[]> => {
+  let itens: Itemsa[] = []
 
   for (let i = 0; i < qtdItens; i++) {
-    const item = new PedidoItem()
+    const item = new Itemsa()
 
-    item.quantidade = faker.number.int({ min: 1, max: 30 })
-    item.produto = await geradorDeProduto()
-    item.valor_un = item.produto.valor
+    item.quantity = faker.number.int({ min: 1, max: 30 })
+    item.sku = await geradorDeProduto()
+    item.value = item.sku.value
 
     itens.push(item)
   }
@@ -34,11 +35,12 @@ export const geradorDePedidoItens = async (qtdItens: number): Promise<PedidoItem
   return itens
 }
 
-export const geradorDeProduto = async (): Promise<Produto> => {
-  const produto = new Produto()
+export const geradorDeProduto = async (): Promise<Skua> => {
+  const produto = new Skua()
 
+  produto.id = faker.string.uuid()
   produto.descricao = faker.commerce.productName()
-  produto.valor = faker.number.float({ min: 1, max: 30, precision: 2 })
+  produto.value = faker.number.float({ min: 1, max: 30, precision: 2 })
 
   return produto
 }

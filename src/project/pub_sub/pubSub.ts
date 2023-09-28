@@ -16,7 +16,7 @@ async function listenForMessages(subscriptionNameOrId: string, timeout: number) 
 
   let messageCount = 0;
 
-  // let pedido: Pedido = await geradorDePedidos()
+  // let pedido: Pedidoa = await geradorDePedidos()
 
   // const pedidoSalvo = await pedidoRepositorio.salvar(pedido)
 
